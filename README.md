@@ -1,10 +1,9 @@
-<<<<<<< HEAD
-# cursor_usage_plan
-=======
 # Cursor Ultra Usage Planning
 
+**This repo is an example/template.** Clone it and adapt to your own projects: set your repos in [config/projects.list](config/projects.list), run `./scripts/refresh-projects-md.sh`, and use the scripts as-is. The project list and links in the repo are only examples—replace them with your own.
+
 **Goal: Effectively use your $400 each period.**  
-Your Ultra budget resets on the **17th of each month**. Plan and divide it across projects so you use the full amount on high-value work instead of leaving it on the table.
+Your Ultra budget resets on a **fixed day each month** (e.g. the 17th—set `BUDGET_ROLLOVER_DAY` in [config/budget.env](config/budget.env)). Plan and divide it across projects so you use the full amount on high-value work instead of leaving it on the table.
 
 ## Workflow at a glance
 
@@ -14,28 +13,18 @@ Your Ultra budget resets on the **17th of each month**. Plan and divide it acros
 So: **start with current usage CSV → then plan in a document that conforms to the monthly plan template.**
 
 **→ [RUNBOOK.md](RUNBOOK.md)** — commands-only run flow (import CSV → remaining → plan → estimate). RUNBOOK also explains how **projects.md** (allocation by target %) and **plans/YYYY-MM.md** (period plan from the monthly template) work together.  
-**→ [docs/README-diagrams.md](docs/README-diagrams.md)** — PlantUML flow diagrams (overview, commands, two-docs). Export PNG: run `./scripts/download-plantuml.sh` once (downloads JAR to lib/), then `./scripts/export-puml-png.sh`.
+**→ [docs/README-diagrams.md](docs/README-diagrams.md)** — PlantUML flow diagrams (overview, commands, two-docs). Export PNG: run `./scripts/download-plantuml.sh` once (downloads JAR to lib/), then `./scripts/export-puml-png.sh`.  
+**→ [docs/security-and-config.md](docs/security-and-config.md)** — No secrets; planning repos are configurable via [config/projects.list](config/projects.list).
 
-## Quick links
-
-| Project | Repo | Purpose |
-|--------|------|--------|
-| [course-builder](https://github.com/menkelabs/course-builder) | menkelabs/course-builder | Course creation tooling |
-| [datadog-drilldown](https://github.com/menkelabs/datadog-drilldown) | menkelabs/datadog-drilldown | Datadog drill-down / exploration |
-| [camera_recorder](https://github.com/menkelabs/camera_recorder) | menkelabs/camera_recorder | Dual camera + golf swing (MediaPipe) |
-| [embabel-agent-rag-sample](https://github.com/menkelabs/embabel-agent-rag-sample) | menkelabs/embabel-agent-rag-sample | Embabel RAG demo |
-| [chatbot](https://github.com/menkelabs/chatbot) | menkelabs/chatbot | Chatbot app |
-| [reference-architecture-poc](https://github.com/menkelabs/reference-architecture-poc) | menkelabs/reference-architecture-poc | Reference architecture POC |
-
-## How to use your $400 each period (resets 17th)
+## How to use your $400 each period (resets on your rollover day)
 
 1. **State what you want to do (A, B, C) with priorities** – In your monthly plan ([plans/YYYY-MM.md](plans/)), fill the **“What I want to do this month (wishlist)”** table: Item, Priority, Description, Est. $ (or leave Est. $ blank to use default).
 2. **Run planning to estimate cost** – Run **`./scripts/estimate-plan.sh`**. It sums Est. $ per item (using [config/budget.env](config/budget.env) default for blank rows) and tells you **total** and **“Fits in $400?”** so you can schedule.
 3. **Schedule** – If it fits, copy items into **week-by-week** in the same plan. If over, drop P2 items or lower Est. $ and re-run.
-4. **Set budget** – [config/budget.env](config/budget.env): `MONTHLY_BUDGET_DOLLARS=400`, `BUDGET_ROLLOVER_DAY=17` (fixed reset date), and optional `DOLLARS_PER_FEATURE` (default Est. $ when wishlist row is blank).
+4. **Set budget** – [config/budget.env](config/budget.env): `MONTHLY_BUDGET_DOLLARS=400`, `BUDGET_ROLLOVER_DAY` (e.g. `17` = resets on the 17th; use your plan’s reset day), and optional `DOLLARS_PER_FEATURE` (default Est. $ when wishlist row is blank).
 5. **Assign % per project** – [projects.md](projects.md): give each repo a target %; use **what-if** and **estimate-budget.sh** for Est. $ per repo.
 6. **Track usage** – Export usage CSV from the dashboard (or paste raw CSV), run **`./scripts/import-usage-from-csv.sh`**, then **`./scripts/usage-remaining.sh`** to see **used / remaining $**. See [docs/usage-integration.md](docs/usage-integration.md).
-7. **Buffer before next 17th** – If you have remaining $, add work or pick from [embabel-low-effort-issues.md](embabel-low-effort-issues.md) so you use the full $400 before the next reset.
+7. **Buffer before next reset** – If you have remaining $, add work or pick from your own buffer list (or the optional [embabel-low-effort-issues.md](embabel-low-effort-issues.md) if you keep it) so you use the full $400 before the next rollover.
 
 See **[docs/plan-and-estimate-workflow.md](docs/plan-and-estimate-workflow.md)** for the full “I want to do A, B, C — estimate cost and help me schedule” workflow.
 
@@ -47,7 +36,7 @@ cursor_usage_plan/
 ├── projects.md                    # Project registry + target % + Est. $
 ├── embabel-low-effort-issues.md   # Buffer: low-effort Embabel issues
 ├── config/
-│   ├── budget.env                 # MONTHLY_BUDGET_DOLLARS=400, BUDGET_ROLLOVER_DAY=17, etc.
+│   ├── budget.env                 # MONTHLY_BUDGET_DOLLARS=400, BUDGET_ROLLOVER_DAY (e.g. 17), etc.
 │   └── usage.env                  # USED_DOLLARS (set by import-usage-from-csv.sh)
 ├── scripts/
 │   ├── estimate-plan.sh           # Plan & estimate: wishlist → sum Est. $, Fits in $400?
@@ -73,14 +62,13 @@ cursor_usage_plan/
 |--------|----------------|
 | **estimate-plan.sh** | **Plan and estimate cost:** reads “What I want to do (wishlist)” from your monthly plan, sums Est. $ per item (default for blank rows), and reports total and “Fits in $400?” so you can schedule. See [docs/plan-and-estimate-workflow.md](docs/plan-and-estimate-workflow.md). |
 | **usage-remaining.sh** | Shows used $, remaining $, % remaining, ~features left. Run after [importing CSV](docs/usage-integration.md). |
-| **what-if-target.sh** | e.g. `./scripts/what-if-target.sh course-builder 25` → Est. $ for that repo at 25%, ~features, remaining $ for repo. |
+| **what-if-target.sh** | e.g. `./scripts/what-if-target.sh <project> 25` → Est. $ for that repo at 25%, ~features, remaining $ for repo. |
 | **estimate-budget.sh** | Table of Est. $ per project (and ~features, ~sessions) from target %. |
 | **import-usage-from-csv.sh** | Provide current usage: pass CSV file, or pipe/paste raw CSV into the script → updates USED_DOLLARS in usage.env. |
 
 ## Tips for using the full $400
 
 - **Plan in $** – In your monthly plan, list planned features with rough $ per feature (e.g. “Auth ~$20, Export ~$15”) so you add up to ~$400.
-- **Check remaining often** – Run `./scripts/usage-remaining.sh` weekly; if remaining is high, schedule more work or Embabel issues.
+- **Check remaining often** – Run `./scripts/usage-remaining.sh` weekly; if remaining is high, schedule more work or buffer tasks.
 - **Reserve buffer %** – Keep 10–15% unassigned for ad-hoc work; use it in the last week if you still have remaining $.
-- **Fill with Embabel issues** – Use [embabel-low-effort-issues.md](embabel-low-effort-issues.md) when you have extra budget so nothing is left unused.
->>>>>>> 311bdaa (cursor usage plan)
+- **Fill with buffer work** – Use your own list of low-effort tasks (or the optional [embabel-low-effort-issues.md](embabel-low-effort-issues.md) if you keep it) when you have extra budget so nothing is left unused.

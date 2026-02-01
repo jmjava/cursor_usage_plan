@@ -1,6 +1,6 @@
 # Runbook — commands only
 
-Budget resets **17th** of each month. Usage comes from **CSV** (dashboard → export).
+Budget resets on a **fixed day** each month (set `BUDGET_ROLLOVER_DAY` in config/budget.env, e.g. 17). Usage comes from **CSV** (dashboard → export).
 
 ---
 
@@ -84,7 +84,7 @@ Pick from [embabel-low-effort-issues.md](embabel-low-effort-issues.md) when you 
 
 ## Config (one-time or rare)
 
-- **config/budget.env** — `MONTHLY_BUDGET_DOLLARS=400`, `BUDGET_ROLLOVER_DAY=17`, `DOLLARS_PER_FEATURE=20`, `DOLLARS_PER_SESSION=10`
+- **config/budget.env** — `MONTHLY_BUDGET_DOLLARS=400`, `BUDGET_ROLLOVER_DAY` (e.g. 17 = resets on the 17th), `DOLLARS_PER_FEATURE=20`, `DOLLARS_PER_SESSION=10`
 - **config/usage.env** — set by import script (USED_DOLLARS)
 - **projects.md** — target % per project
 - **plans/YYYY-MM.md** — your plan for the period; copy from [templates/monthly-plan-template.md](templates/monthly-plan-template.md) when starting a new period

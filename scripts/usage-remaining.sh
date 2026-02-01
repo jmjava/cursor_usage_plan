@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Show Cursor usage and remaining (cost $). Ultra = $400.
-# Budget period resets on a fixed day each month (default: 17th).
+# Budget period resets on a fixed day each month (BUDGET_ROLLOVER_DAY in config, e.g. 17).
 # Set MONTHLY_BUDGET_DOLLARS, USED_DOLLARS or REMAINING_DOLLARS in config.
 # Usage: ./scripts/usage-remaining.sh
 

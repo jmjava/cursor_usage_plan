@@ -1,7 +1,7 @@
 # Cursor Usage Plan — YYYY-MM
 
 **Month:** YYYY-MM  
-**Goal:** Use your $400 this period (resets on the 17th of each month). See [projects.md](../projects.md) for target % and Est. $ per project.
+**Goal:** Use your $400 this period (resets on your rollover day—set `BUDGET_ROLLOVER_DAY` in [config/budget.env](../config/budget.env), e.g. 17). See [projects.md](../projects.md) for target % and Est. $ per project.
 
 ---
 
@@ -22,29 +22,21 @@ List **A, B, C** (and more) with **priorities**. Add **Est. $** per item (or lea
 
 ## Monthly goals (one line per project)
 
+_(Project rows come from [projects.md](../projects.md), generated from [config/projects.list](../config/projects.list). Run `./scripts/refresh-projects-md.sh` after changing the config, then copy the project rows here.)_
+
 | Project | Goal this month | Target % |
 |---------|-----------------|----------|
-| course-builder | | % |
-| datadog-drilldown | | % |
-| camera_recorder | | % |
-| embabel-agent-rag-sample | | % |
-| chatbot | | % |
-| reference-architecture-poc | | % |
+| _copy from projects.md_ | | % |
 
 ---
 
 ## Planned features per repo (schedule to use your $400)
 
-Use [what-if](../docs/what-if.md) and `./scripts/estimate-budget.sh` to get **Est. $** per repo. List planned features (and rough $ each); check sum ≤ Est. $ so you use the full budget.
+Use [what-if](../docs/what-if.md) and `./scripts/estimate-budget.sh` to get **Est. $** per repo. List planned features (and rough $ each); check sum ≤ Est. $ so you use the full budget. _(Project list from [projects.md](../projects.md).)_
 
 | Project | Est. $ (from budget) | Planned features (est. $ each) | Sum | Fits? |
 |---------|----------------------|-------------------------------|-----|-------|
-| course-builder | | _e.g. Auth ($20), Export ($15)_ | | |
-| datadog-drilldown | | | | |
-| camera_recorder | | | | |
-| embabel-agent-rag-sample | | | | |
-| chatbot | | | | |
-| reference-architecture-poc | | | | |
+| _copy from projects.md_ | | _e.g. Auth ($20), Export ($15)_ | | |
 
 ---
 
@@ -98,7 +90,7 @@ Use [what-if](../docs/what-if.md) and `./scripts/estimate-budget.sh` to get **Es
 
 ---
 
-## End-of-period check (before next 17th)
+## End-of-period check (before next rollover)
 
 - [ ] Did I use most of my $400? (Run `./scripts/usage-remaining.sh`.)
 - [ ] Did I hit target % for P0 projects?
