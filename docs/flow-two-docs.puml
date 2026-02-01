@@ -1,0 +1,51 @@
+@startuml flow-two-docs
+!theme plain
+title How projects.md and plans/YYYY-MM.md work together
+
+skinparam backgroundColor #FEFEFE
+skinparam componentStyle rectangle
+skinparam defaultFontSize 11
+
+package "Allocation (set once or rebalance)" {
+  [projects.md] as Projects
+  note right of Projects
+    Target % per project
+    (e.g. course-builder 25%,
+     datadog 15%)
+  end note
+}
+
+package "Scripts (allocation)" {
+  [estimate-budget.sh] as EstBudget
+  [what-if-target.sh] as WhatIf
+}
+
+package "Period plan (one file per period)" {
+  [plans/YYYY-MM.md] as Plan
+  note left of Plan
+    Copy from
+    monthly-plan-template.md
+    • Wishlist (tasks A,B,C + Est.$)
+    • Planned features per repo
+  end note
+}
+
+package "Scripts (period plan)" {
+  [estimate-plan.sh] as EstPlan
+}
+
+[Projects] --> [EstBudget] : target %
+[EstBudget] --> [Projects] : (table: Est.$ per project)
+[Projects] --> [WhatIf] : try new %
+[WhatIf] --> [Projects] : (suggested %)
+
+[EstBudget] ..> [Plan] : Est.$ per project\n→ fill "Planned features per repo"\n(keep sum ≤ Est.$ per repo)
+
+[Plan] --> [EstPlan] : wishlist
+[EstPlan] --> [Plan] : total vs remaining $\nFits? yes/no
+
+config/usage.env --> [EstBudget] : remaining $
+config/usage.env --> [EstPlan] : remaining $
+config/usage.env --> [WhatIf] : remaining $
+
+@enduml

@@ -1,0 +1,7 @@
+# Repos to scan for low-effort issues (one owner/repo per line; # = comment)
+# Add or remove repos as needed.
+embabel/embabel-agent
+embabel/embabel-agent-examples
+embabel/coding-agent
+embabel/decker
+menkelabs/embabel-agent-rag-sample

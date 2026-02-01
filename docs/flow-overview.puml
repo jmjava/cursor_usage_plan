@@ -1,0 +1,37 @@
+@startuml flow-overview
+!theme plain
+title Cursor usage plan — flow overview
+
+skinparam backgroundColor #FEFEFE
+skinparam activityBackgroundColor #E8F4FD
+skinparam activityBorderColor #2E86AB
+skinparam arrowColor #2E86AB
+
+|#LightBlue|**Input**|
+start
+:Export usage CSV\nfrom Cursor dashboard;
+:Run **import-usage-from-csv.sh**\n(file or stdin);
+:Writes **USED_DOLLARS**\nto config/usage.env;
+
+|#LightGreen|**Check remaining**|
+:Run **usage-remaining.sh**;
+:See used $, remaining $,\n% remaining, ~features left;
+
+|#LightYellow|**Allocation (projects.md)**|
+:Set **target %** per project\nin projects.md;
+:Run **estimate-budget.sh**\n→ Est. $ per project;
+:Run **what-if-target.sh** project pct\n(to try a new target %);
+
+|#LightCoral|**Period plan (plans/YYYY-MM.md)**|
+:Copy template → **plans/YYYY-MM.md**\n(new period);
+:Fill **wishlist** table\n(Item, Priority, Description, Est. $);
+:Run **estimate-plan.sh**\n→ total vs remaining, Fits?;
+:Adjust wishlist until fits;\ncopy into week-by-week;
+:Fill **Planned features per repo**\n(keep each repo ≤ its Est. $);
+
+|#Lavender|**Optional**|
+:Run **update-embabel-low-effort-issues.sh**;
+:Pick from embabel-low-effort-issues.md\nwhen remaining $;
+
+stop
+@enduml

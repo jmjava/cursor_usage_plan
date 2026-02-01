@@ -1,0 +1,40 @@
+@startuml flow-commands
+!theme plain
+title RUNBOOK — command flow (cost, reset 17th)
+
+skinparam backgroundColor #FEFEFE
+skinparam sequenceArrowThickness 2
+skinparam roundCorner 10
+
+actor User
+participant "Dashboard" as Dash
+participant "import-usage-from-csv.sh" as Import
+participant "config/usage.env" as Usage
+participant "usage-remaining.sh" as Remain
+participant "plans/YYYY-MM.md" as Plan
+participant "estimate-plan.sh" as EstPlan
+participant "projects.md" as Projects
+participant "estimate-budget.sh" as EstBudget
+participant "what-if-target.sh" as WhatIf
+
+User -> Dash: Export CSV
+User -> Import: ./scripts/import-usage-from-csv.sh [file]\nor pipe CSV
+Import -> Usage: USED_DOLLARS
+Import --> User: Summed cost, updated
+
+User -> Remain: ./scripts/usage-remaining.sh
+Remain -> Usage: read
+Remain --> User: used $, remaining $, % remaining
+
+User -> Plan: Edit wishlist (from template if new)
+User -> EstPlan: ./scripts/estimate-plan.sh [plan]
+EstPlan -> Usage: remaining $
+EstPlan --> User: total, Fits? (yes/no)
+
+User -> Projects: Set target % per project
+User -> EstBudget: ./scripts/estimate-budget.sh
+EstBudget --> User: Est. $ per project, ~features, ~sessions
+User -> WhatIf: ./scripts/what-if-target.sh project pct
+WhatIf --> User: Est. $ for repo at new %
+
+@enduml
